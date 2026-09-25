@@ -149,3 +149,28 @@ jobs:
           push: true
           tags: satpathy1991devops/bankapp:latest
           file: ./Dockerfile
+   deploy_to_kubernetes:
+    runs-on: self-hosted
+    needs: build_docker_image_and_push
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check AWS Identity
+        run: |
+          aws sts get-caller-identity
+
+      - name: Configure kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region ap-southeast-1 \
+            --name github-actions-cluster
+
+      - name: Check EKS connection
+        run: |
+          kubectl get nodes
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f ds.yml
