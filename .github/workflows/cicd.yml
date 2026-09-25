@@ -147,5 +147,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: achyutdevops/bankapp:latest
+          tags: satpathy1991devops/bankapp:latest
           file: ./Dockerfile
